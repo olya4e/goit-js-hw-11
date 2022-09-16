@@ -10,68 +10,75 @@ const galleryEl = document.querySelector('.js-gallery');
 const loadMoreBtnEl = document.querySelector('.js-load-more');
 
 const pixabayApi = new PixabyApi();
+const totalHitsQuery = pixabayApi.page * Number(pixabayApi.photoPerPage);
 
-const onLoadMoreBtnClick = e => {
-  pixabayApi.page += 1;
+const onLoadMoreBtnClick = async e => {
+  try {
+    pixabayApi.page += 1;
+    const { data } = await pixabayApi.getPhotoByQuery();
+    const totalPage = Math.ceil(data.totalHits / pixabayApi.photoPerPage);
 
-  pixabayApi
-    .getPhotoByQuery()
-    .then(response => {
-      const { data } = response;
-
-      if (pixabayApi.page * Number(pixabayApi.photoPerPage) > data.totalHits) {
-        loadMoreBtnEl.classList.add('is-hidden');
-        loadMoreBtnEl.removeEventListener('click', onLoadMoreBtnClick);
-        Notiflix.Notify.info(
-          `We're sorry, but you've reached the end of search results.`
-        );
-      }
-
-      galleryEl.insertAdjacentHTML('beforeend', createGalleryCards(data.hits));
-      simpleLightbox = new SimpleLightbox('.gallery a').refresh();
-    })
-    .catch(err => {
-      console.log(err);
-    });
+    if (pixabayApi.page === totalPage) {
+      loadMoreBtnEl.classList.add('is-hidden');
+      loadMoreBtnEl.removeEventListener('click', onLoadMoreBtnClick);
+      notifyEndResult();
+    }
+    galleryEl.insertAdjacentHTML('beforeend', createGalleryCards(data.hits));
+    simpleLightbox = new SimpleLightbox('.gallery a').refresh();
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-const onSearchFormElSubmit = e => {
+const onSearchFormElSubmit = async e => {
   e.preventDefault();
+  try {
+    pixabayApi.searchQuery = e.currentTarget.elements.searchQuery.value;
+    pixabayApi.page = 1;
+    const { data } = await pixabayApi.getPhotoByQuery();
+    loadMoreBtnEl.classList.add('is-hidden');
+    if (pixabayApi.searchQuery === '') {
+      notifyEmptyStr();
+      return;
+    }
 
-  pixabayApi.searchQuery = e.currentTarget.elements.searchQuery.value;
-  pixabayApi.page = 1;
-  if (pixabayApi.searchQuery === '') {
-    Notiflix.Notify.failure(
-      'The search string cannot be empty. Please specify your search query.'
-    );
-    return;
+    if (data.totalHits > 0) {
+      notifyFindImg(data);
+    }
+
+    if (data.totalHits === 0) {
+      notifyNoImg();
+      return;
+    }
+    if (totalHitsQuery > data.totalHits) {
+      galleryEl.innerHTML = createGalleryCards(data.hits);
+      simpleLightbox = new SimpleLightbox('.gallery a');
+      return;
+    } else {
+      galleryEl.innerHTML = createGalleryCards(data.hits);
+      loadMoreBtnEl.classList.remove('is-hidden');
+      loadMoreBtnEl.addEventListener('click', onLoadMoreBtnClick);
+      simpleLightbox = new SimpleLightbox('.gallery a');
+    }
+  } catch (err) {
+    console.log(err);
   }
-  pixabayApi
-    .getPhotoByQuery()
-    .then(response => {
-      const { data } = response;
-      if (data.totalHits > 0) {
-        Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-      }
-
-      if (data.totalHits === 0) {
-        Notiflix.Notify.failure(`No images found for your request`);
-        return;
-      }
-      if (pixabayApi.page * Number(pixabayApi.photoPerPage) > data.totalHits) {
-        galleryEl.innerHTML = createGalleryCards(data.hits);
-        loadMoreBtnEl.classList.add('is-hidden');
-        simpleLightbox = new SimpleLightbox('.gallery a');
-        return;
-      } else {
-        galleryEl.innerHTML = createGalleryCards(data.hits);
-        loadMoreBtnEl.classList.remove('is-hidden');
-        loadMoreBtnEl.addEventListener('click', onLoadMoreBtnClick);
-        simpleLightbox = new SimpleLightbox('.gallery a');
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
 };
 searchFormEl.addEventListener('submit', onSearchFormElSubmit);
+
+function notifyNoImg() {
+  Notiflix.Notify.failure(`No images found for your request`);
+}
+function notifyFindImg(data) {
+  Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+}
+function notifyEmptyStr() {
+  Notiflix.Notify.failure(
+    'The search string cannot be empty. Please specify your search query.'
+  );
+}
+function notifyEndResult() {
+  Notiflix.Notify.info(
+    `We're sorry, but you've reached the end of search results.`
+  );
+}
