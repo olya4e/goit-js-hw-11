@@ -5,7 +5,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 import { PixabyApi } from './pixabayApi';
 import createGalleryCards from '../templates/galleryCards.hbs';
-import simpleLightbox from 'simplelightbox';
 const searchFormEl = document.querySelector('#search-form');
 const galleryEl = document.querySelector('.js-gallery');
 const loadMoreBtnEl = document.querySelector('.js-load-more');
