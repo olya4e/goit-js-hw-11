@@ -1,0 +1,197 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji';
+background-image: linear-gradient(to left, #453940, #433a42, #413c43, #3f3d44, #3e3e44, #3c3e45, #393f46, #363f46, #2f4047, #274046, #204143, #1b413e);}
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+ul,
+ol {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.list {
+    list-style: none;
+}
+
+
+.link {
+    text-decoration: none;
+}
+
+.container {
+    width: 1200px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ========= GALLERY ============ */
+
+.gallery-section {
+    padding: 110px 0;
+    
+}
+.form-wrapper{
+    width: 100%;
+    background-color:#4D75BF;
+    position:fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+
+box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
+.search-form {
+    display: flex;
+    position: relative;
+   
+    width: 600px;
+    margin: 15px auto;
+    
+}
+
+input {
+    width: 100%;
+        height: 42px;
+        padding-left: 10px;
+        border: 2px solid #489F99;
+        border-radius: 5px;
+        outline: none;
+        background: #F9F0DA;
+        color: #656464;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+ 
+
+.search-btn {
+    position: absolute;
+        top: 0;
+        right: 0px;
+        width: 42px;
+        height: 42px;
+        border: none;
+        background: #489F99;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+   
+}
+.icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    stroke-width: 0;
+    stroke: currentColor;
+    fill:rgb(241, 238, 238);
+    transition: 0.3s;
+   
+}
+.load-more.is-hidden {
+    display: none;
+}
+
+
+.load-more {
+    display: block;
+    margin: 0 auto;
+    border-color: transparent;
+    background-color: #489F99;
+    width: 200px;
+    height: 42px;
+    border: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: rgb(241, 238, 238);
+    text-transform: uppercase;
+    transition: 0.5s;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    
+
+}
+
+.search-btn:hover .icon,
+.search-btn:focus .icon
+{transform: scale(1.20);}
+.load-more:hover,
+.load-more:focus {
+    transform: scale(0.9);
+    
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -30px;
+    margin-top: -30px;
+    margin-bottom: 20px;
+}
+
+.gallery__item {
+    margin-top: 20px;
+    margin-left: 20px;
+    /* min-width: 320px; */
+    flex-basis: calc((100% - 80px) / 4);
+    border: 2px solid rgb(241, 238, 238);
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+.gallery__item:hover{
+    transform: scale(1.05);
+}
+
+.gallery-img {
+    display: block;
+    height: 25vh;
+    object-fit: cover;
+}
+.info {
+    display: flex;
+    padding: 10px;
+    justify-content: space-around;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: rgb(250, 250, 250);
+    font-size: 12px;
+}
+
+.info-item:not(:first-child) {
+    margin-left: 5px;
+}
+
+.btn-load-more.is-hidden {
+    display: none;
+}
+.photo-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
