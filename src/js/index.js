@@ -18,7 +18,7 @@ const paintRandomPhotosByPageLoad = async () => {
     pixabayApi.searchQuery = 'popular';
     const { data } = await pixabayApi.getPhotoByQuery();
     galleryEl.innerHTML = createGalleryCards(data.hits);
-    simpleLightbox = new SimpleLightbox('.gallery a');
+    SimpleLightbox = new SimpleLightbox('.gallery a');
   } catch (err) {
     console.log(err);
   }
