@@ -8,9 +8,22 @@ import createGalleryCards from '../templates/galleryCards.hbs';
 const searchFormEl = document.querySelector('#search-form');
 const galleryEl = document.querySelector('.js-gallery');
 const loadMoreBtnEl = document.querySelector('.js-load-more');
+const targetEl = document.querySelector('.target-element');
 
 const pixabayApi = new PixabyApi();
 const totalHitsQuery = pixabayApi.page * Number(pixabayApi.photoPerPage);
+
+const paintRandomPhotosByPageLoad = async () => {
+  try {
+    pixabayApi.searchQuery = 'popular';
+    const { data } = await pixabayApi.getPhotoByQuery();
+    galleryEl.innerHTML = createGalleryCards(data.hits);
+    simpleLightbox = new SimpleLightbox('.gallery a');
+  } catch (err) {
+    console.log(err);
+  }
+};
+paintRandomPhotosByPageLoad();
 
 const onLoadMoreBtnClick = async e => {
   try {
@@ -18,13 +31,13 @@ const onLoadMoreBtnClick = async e => {
     const { data } = await pixabayApi.getPhotoByQuery();
     const totalPage = Math.ceil(data.totalHits / pixabayApi.photoPerPage);
 
-    if (pixabayApi.page === totalPage) {
+    if (pixabayApi.page > totalPage) {
       loadMoreBtnEl.classList.add('is-hidden');
       loadMoreBtnEl.removeEventListener('click', onLoadMoreBtnClick);
       notifyEndResult();
     }
     galleryEl.insertAdjacentHTML('beforeend', createGalleryCards(data.hits));
-    simpleLightbox = new SimpleLightbox('.gallery a').refresh();
+    SimpleLightbox = new SimpleLightbox('.gallery a').refresh();
   } catch (err) {
     console.log(err);
   }
@@ -52,13 +65,13 @@ const onSearchFormElSubmit = async e => {
     }
     if (totalHitsQuery > data.totalHits) {
       galleryEl.innerHTML = createGalleryCards(data.hits);
-      simpleLightbox = new SimpleLightbox('.gallery a');
+      SimpleLightbox = new SimpleLightbox('.gallery a');
       return;
     } else {
       galleryEl.innerHTML = createGalleryCards(data.hits);
       loadMoreBtnEl.classList.remove('is-hidden');
       loadMoreBtnEl.addEventListener('click', onLoadMoreBtnClick);
-      simpleLightbox = new SimpleLightbox('.gallery a');
+      SimpleLightbox = new SimpleLightbox('.gallery a');
     }
   } catch (err) {
     console.log(err);
