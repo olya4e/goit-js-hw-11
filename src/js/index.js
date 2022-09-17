@@ -12,7 +12,7 @@ const targetEl = document.querySelector('.target-element');
 
 const pixabayApi = new PixabyApi();
 const totalHitsQuery = pixabayApi.page * Number(pixabayApi.photoPerPage);
-let simpleLightBox = new SimpleLightbox('.gallery a');
+const simpleLightBox = new SimpleLightbox('.gallery a');
 
 const paintRandomPhotosByPageLoad = async () => {
   try {
